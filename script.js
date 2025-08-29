@@ -48,3 +48,5 @@ function updateCartCount() {
   document.getElementById("cartCount").textContent = cartCount;
   document.getElementById("cartCountMobile").textContent = cartCount;
 }
+
+
