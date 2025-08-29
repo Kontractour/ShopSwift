@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopSwift — Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="assets/logo.svg" />
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Nav and Hero -->
+
+
+  <div class="bg-white dark:bg-gray-900">
+  <header class="absolute inset-x-0 top-0 z-50">
+    <nav aria-label="Global" class="flex items-center justify-between p-6 lg:px-8">
+      <div class="flex lg:flex-1">
+        <a href="#" class="-m-1.5 p-1.5">
+          <span class="sr-only">logo</span>
+          <img src="assets/logo.svg" alt="Logo" class="h-12 w-auto">
+        </a>
+      </div>
+<!-- Mobile menu button -->
+      <div class="hidden lg:flex lg:gap-x-12">
+        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Product</a>
+        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Features</a>
+        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Marketplace</a>
+        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Company</a>
+      </div>
+      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Log in <span aria-hidden="true">&rarr;</span></a>
+      </div>
+
+      <div class="flex lg:hidden">
+        <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200">
+          <span class="sr-only">Open main menu</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
+            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+
+          <!-- Cart with Counter -->
+          <div class="relative ml-4">
+            <button id="cartBtn" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+              🛒
+            </button>
+            <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              0
+            </span>
+          </div>
+
+
+    </nav>
+    <el-dialog>
+      <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
+        <div tabindex="0" class="fixed inset-0 focus:outline-none">
+          <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-gray-900 dark:sm:ring-gray-100/10">
+            <div class="flex items-center justify-between">
+              <a href="#" class="-m-1.5 p-1.5">
+                <span class="sr-only">Your Company</span>
+                <img src="assets/logo.svg" alt="" class="h-8 w-auto dark:hidden" />
+                <img src="assets/logo.svg" alt="" class="h-8 w-auto not-dark:hidden" />
+              </a>
+              <button type="button" command="close" commandfor="mobile-menu" class="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-200">
+                <span class="sr-only">Close menu</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
+                  <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+            <div class="mt-6 flow-root">
+              <div class="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
+                <div class="space-y-2 py-6">
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Product</a>
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Features</a>
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Marketplace</a>
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Company</a>
+                </div>
+                <div class="py-6">
+                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Log in</a>
+                  <div class="mt-6">
+                    <button id="cartBtnMobile" class="w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+                      🛒 Cart (<span id="cartCountMobile">0</span>)
+                    </button>
+                </div>
+              </div>
+            </div>
+          </el-dialog-panel>
+        </div>
+      </dialog>
+    </el-dialog>
+  </header>
+
+
+<!--Hero Section-->
+
+
+<!-- End of Hero Section -->
+<section class="relative w-full h-[500px] overflow-hidden">
+  <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
+    <!-- Slide 1 -->
+    <div class="min-w-full h-[500px] relative">
+      <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f" 
+           alt="Electronics" 
+           class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+        <h2 class="text-4xl font-bold text-white">Electronics</h2>
+      </div>
+    </div>
+    <!-- Slide 2 -->
+    <div class="min-w-full h-[500px] relative">
+      <img src="assets/hoodie.jpg" 
+           alt="Clothing" 
+           class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+        <h2 class="text-4xl font-bold text-white">Fashion</h2>
+      </div>
+    </div>
+    <!-- Slide 3 -->
+    <div class="min-w-full h-[500px] relative">
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" 
+           alt="Shoes" 
+           class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+        <h2 class="text-4xl font-bold text-white">Shoes</h2>
+      </div>
+    </div>
+    <!-- Slide 4 -->
+    <div class="min-w-full h-[500px] relative">
+      <img src="assets/furniture.jpg" 
+           alt="Furniture" 
+           class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+        <h2 class="text-4xl font-bold text-white">Furniture</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <button onclick="prevSlide()" class="absolute left-5 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full">&#10094;</button>
+  <button onclick="nextSlide()" class="absolute right-5 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full">&#10095;</button>
+</section>
+
+
+
+
+
+
+   <script src="script.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+</body>
+</html>
