@@ -14,45 +14,50 @@
 
   <div class="bg-white dark:bg-gray-900">
   <header class="absolute inset-x-0 top-0 z-50">
-    <nav aria-label="Global" class="flex items-center justify-between p-6 lg:px-8">
-      <div class="flex lg:flex-1">
-        <a href="#" class="-m-1.5 p-1.5">
-          <span class="sr-only">logo</span>
-          <img src="assets/logo.svg" alt="Logo" class="h-12 w-auto">
-        </a>
-      </div>
-<!-- Mobile menu button -->
-      <div class="hidden lg:flex lg:gap-x-12">
-        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Product</a>
-        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Features</a>
-        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Marketplace</a>
-        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Company</a>
-      </div>
-      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Log in <span aria-hidden="true">&rarr;</span></a>
-      </div>
+  <nav aria-label="Global" class="flex items-center justify-between p-6 lg:px-8">
+  <div class="flex lg:flex-1">
+    <a href="#" class="-m-1.5 p-1.5">
+      <span class="sr-only">logo</span>
+      <img src="assets/ShopSwift-logo.jpg" alt="Logo" class="h-12 w-auto">
+    </a>
+  </div>
 
-      <div class="flex lg:hidden">
-        <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200">
-          <span class="sr-only">Open main menu</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
+  <!-- Desktop menu -->
+  <div class="hidden lg:flex lg:gap-x-12">
+    <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Product</a>
+    <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Features</a>
+    <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Marketplace</a>
+    <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Company</a>
+  </div>
 
-          <!-- Cart with Counter -->
-          <div class="relative ml-4">
-            <button id="cartBtn" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-              🛒
-            </button>
-            <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-              0
-            </span>
-          </div>
+  <!-- Desktop login -->
+  <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+    <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Log in <span aria-hidden="true">&rarr;</span></a>
+  </div>
 
+  <!-- Mobile: Cart + Menu Toggle together -->
+  <div class="flex items-center gap-3">
+    <!-- Cart (visible on all screens) -->
+    <div class="relative">
+      <button id="cartBtn" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+        🛒
+      </button>
+      <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+        0
+      </span>
+    </div>
 
-    </nav>
+    <!-- Mobile menu toggle (only visible on mobile) -->
+    <div class="lg:hidden">
+      <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200">
+        <span class="sr-only">Open main menu</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
+          <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
     <el-dialog>
       <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
         <div tabindex="0" class="fixed inset-0 focus:outline-none">

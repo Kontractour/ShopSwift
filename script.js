@@ -41,3 +41,10 @@ console.log("hello world and welcome to shopSwift");
         cartCountEl.textContent = cartCount;
       });
     });
+
+    // Sync both cart counters
+function updateCartCount() {
+  cartCount++;
+  document.getElementById("cartCount").textContent = cartCount;
+  document.getElementById("cartCountMobile").textContent = cartCount;
+}
