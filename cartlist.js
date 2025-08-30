@@ -32,21 +32,24 @@
         const itemElement = document.createElement("div");
         itemElement.className = "flex items-center justify-between border-b pb-4";
 
-        itemElement.innerHTML = `
-          <div class="flex items-center space-x-4">
-            <img src="${item.image}" alt="${item.name}" class="h-16 w-16 rounded object-cover">
-            <div>
-              <h2 class="font-semibold">${item.name}</h2>
-              <p class="text-sm text-gray-500">$${item.price.toFixed(2)}</p>
-            </div>
-          </div>
-          <div class="flex items-center space-x-3">
-            <input type="number" min="1" value="${item.quantity}" 
-                   class="w-16 text-center border rounded px-2 py-1 dark:bg-gray-800 dark:border-gray-700"
-                   data-index="${index}" />
-            <button class="text-red-500 hover:text-red-700 font-medium" data-remove="${index}">Remove</button>
-          </div>
-        `;
+    itemElement.innerHTML = `
+  <div class="flex items-center space-x-4">
+    <img src="${item.image}" alt="${item.name}" class="h-16 w-16 rounded object-cover">
+    <div>
+      <h2 class="font-semibold text-gray-900 dark:text-gray-100">${item.name}</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400">$${item.price.toFixed(2)}</p>
+    </div>
+  </div>
+  <div class="flex items-center space-x-3">
+    <input type="number" min="1" value="${item.quantity}" 
+           class="w-16 text-center border rounded px-2 py-1 
+                  bg-white text-gray-900 border-gray-300 
+                  dark:bg-gray-700 dark:text-white dark:border-gray-600"
+           data-index="${index}" />
+    <button class="text-red-500 hover:text-red-700 font-medium" data-remove="${index}">Remove</button>
+  </div>
+`;
+
 
         cartContainer.appendChild(itemElement);
       });

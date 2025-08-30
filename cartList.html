@@ -11,37 +11,43 @@
 <body class="bg-gray-50 text-gray-800">
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
 
-  <!-- Navbar -->
-  <nav class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow px-4 py-3 flex justify-between items-center">
-    <div class="flex items-center space-x-2">
-      <img src="assets/logo.svg" alt="logo" class="h-8 w-8">
-      <span class="font-bold text-blue-600 text-lg">ShopSwift</span>
-    </div>
-    <a href="ProductPage.html" class="text-sm font-medium hover:text-blue-600">Continue Shopping</a>
-  </nav>
+<!-- Navbar -->
+<nav class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow px-4 py-3 flex justify-between items-center">
+  <!-- Logo + Brand -->
+  <a href="index.html" class="flex items-center space-x-2">
+    <img src="assets/logo.svg" alt="logo" class="h-8 w-8">
+    <span class="font-bold text-blue-600 dark:text-blue-400 text-lg">ShopSwift</span>
+  </a>
+
+  <!-- Continue Shopping Button -->
+  <a href="ProductPage.html" 
+     class="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition">
+    Continue Shopping
+  </a>
+</nav>
 
   <!-- Cart Container -->
-  <main class="max-w-5xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-6">Your Cart</h1>
+<main class="max-w-5xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Your Cart</h1>
 
-    <div id="cart-items" class="space-y-4">
-      <!-- Items will be injected here -->
-    </div>
+  <div id="cart-items" class="space-y-4">
+    <!-- Items will be injected here -->
+     
+  </div>
+<!-- Total Section -->
+<div class="mt-8 border-t pt-4 flex flex-col items-center text-center">
+  <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Total:</span>
+  <span id="cart-total" class="text-xl font-bold text-blue-600 dark:text-blue-400 mt-1">$0.00</span>
+</div>
 
-    <!-- Total Section -->
-    <div class="mt-8 border-t pt-4 flex justify-between items-center">
-      <span class="text-lg font-semibold">Total:</span>
-      <span id="cart-total" class="text-xl font-bold text-blue-600">$0.00</span>
-    </div>
+<!-- Checkout Button -->
+<div class="mt-6 text-center">
+  <a href="checkout.html" 
+     class="px-6 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
+    Proceed to Checkout
+  </a>
+</div>
 
-    <!-- Checkout Button -->
-    <div class="mt-6 text-right">
-      <a href="checkout.html" 
-         class="px-6 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
-        Proceed to Checkout
-      </a>
-    </div>
-  </main>
 
   <script src="cartlist.js"></script>
 </body>
