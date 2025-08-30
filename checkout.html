@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopSwift — Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="assets/logo.svg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+
+  <div class="max-w-6xl mx-auto p-6 md:flex md:space-x-6 relative">
+    <!-- Success Alert -->
+    <div id="successAlert" class="hidden absolute top-4 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-green-100 dark:bg-green-800 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 px-4 py-3 rounded shadow-lg">
+      <strong class="font-bold">Success!</strong>
+      <span class="block">Your order has been placed successfully 🎉</span>
+    </div>
+
+    <!-- Checkout Form -->
+    <form id="checkoutForm" class="flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-bold mb-4">Checkout</h2>
+
+      <!-- Name -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="firstName" class="block font-medium mb-1">First Name</label>
+          <input id="firstName" type="text" required
+            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+          <p class="text-red-500 text-sm mt-1 hidden" id="errorFirstName">First name is required.</p>
+        </div>
+        <div>
+          <label for="lastName" class="block font-medium mb-1">Last Name</label>
+          <input id="lastName" type="text" required
+            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+          <p class="text-red-500 text-sm mt-1 hidden" id="errorLastName">Last name is required.</p>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="mt-4">
+        <label for="address" class="block font-medium mb-1">Address</label>
+        <input id="address" type="text" required
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+        <p class="text-red-500 text-sm mt-1 hidden" id="errorAddress">Address is required.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div>
+          <label for="city" class="block font-medium mb-1">City</label>
+          <input id="city" type="text" required
+            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+          <p class="text-red-500 text-sm mt-1 hidden" id="errorCity">City is required.</p>
+        </div>
+        <div>
+          <label for="zip" class="block font-medium mb-1">ZIP Code</label>
+          <input id="zip" type="text" required
+  class="w-full border rounded px-3 py-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+          <p class="text-red-500 text-sm mt-1 hidden" id="errorZip">Enter a valid ZIP code.</p>
+        </div>
+      </div>
+
+     <!-- Payment -->
+<section class="mb-6">
+  <h3 class="text-lg font-semibold mb-2">Payment</h3>
+
+  <!-- Card Number -->
+  <input id="cardNumber" type="text" placeholder="Card Number" required
+    class="w-full border rounded px-3 py-2 mb-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+  <p class="text-red-500 text-sm mt-1 hidden" id="errorCardNumber">Enter a valid card number.</p>
+
+  <!-- Expiry + CVV -->
+  <div class="flex gap-2">
+    <div class="w-1/2">
+      <input id="expiry" type="text" placeholder="MM/YY" maxlength="5" required
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+      <p class="text-red-500 text-sm mt-1 hidden" id="errorExpiry">Enter a valid expiry date (MM/YY).</p>
+    </div>
+    <div class="w-1/2">
+      <input id="cvv" type="text" placeholder="CVV" maxlength="3" required
+        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+      <p class="text-red-500 text-sm mt-1 hidden" id="errorCvv">Enter a valid 3-digit CVV.</p>
+    </div>
+  </div>
+</section>
+
+
+      <!-- Shipping Options -->
+      <div class="mt-6">
+        <label for="shipping" class="block font-medium mb-1">Shipping Method</label>
+        <select id="shipping" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+          <option value="10">Standard - $10</option>
+          <option value="20">Express - $20</option>
+        </select>
+      </div>
+
+      <button type="submit"
+        class="mt-6 w-full bg-blue-600 text-white py-3 font-bold rounded hover:bg-blue-700 dark:hover:bg-blue-500 transition">
+        Place Order
+      </button>
+    </form>
+
+    <!-- Order Summary -->
+    <div class="w-full md:w-72 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mt-6 md:mt-0" id="orderSummary">
+      <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
+      <div class="space-y-2">
+        <div class="flex justify-between">
+          <span>Subtotal</span>
+          <span id="subtotal">$120.00</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Shipping</span>
+          <span id="shippingCost">$10.00</span>
+        </div>
+        <div class="flex justify-between font-bold">
+          <span>Total</span>
+          <span id="total">$130.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Footer-->
+  <!-- Footer -->
+<footer class="bg-gray-900 text-gray-300 py-10 mt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <!-- Brand / About -->
+    <div>
+      <h2 class="text-2xl font-bold text-white">ShopSwift</h2>
+      <p class="mt-3 text-sm text-gray-400">
+        Bringing you the best shopping experience with fast delivery and secure checkout.
+      </p>
+      <p class="mt-3 text-sm text-gray-500">© 2025 ShopSwift. All rights reserved.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-3">Quick Links</h3>
+      <ul class="space-y-2">
+        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+        <li><a href="ProductPage.html" class="hover:text-white transition">Products</a></li>
+        <li><a href="#" class="hover:text-white transition">About Us</a></li>
+        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Media + Contact -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-3">Connect with Us</h3>
+      <div class="flex space-x-4 mb-4">
+        <a href="https://github.com/Kontractour" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <i class="fab fa-github fa-lg"></i>
+        </a>
+        <a href="https://www.facebook.com/godswill.clement.315/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <i class="fab fa-facebook fa-lg"></i>
+        </a>
+        <a href="https://x.com/Kontractour" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <i class="fab fa-twitter fa-lg"></i>
+        </a>
+        <a href="https://www.instagram.com/willz_clement/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <i class="fab fa-instagram fa-lg"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/godswill-okereke-3ba33b37a" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
+          <i class="fab fa-linkedin fa-lg"></i>
+        </a>
+      </div>
+      <p class="text-sm text-gray-400">Email: okerekegodwill7@gmail.com</p>
+      <p class="text-sm text-gray-400">Phone: +234 810 553 3755</p>
+    </div>
+  </div>
+</footer>
+
+    <script src="CheckOut.js"></script>
+
+</body>
+</html>

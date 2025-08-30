@@ -1,0 +1,299 @@
+alert("Hello world and welcome to ShopSwift");
+console.log("Hello world and welcome to ShopSwift");
+
+// Dark theme handling
+if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+} else {
+    document.documentElement.classList.remove('dark');
+}
+
+// Carousel functionality
+const carousel = document.getElementById('carousel');
+let index = 0;
+
+function showSlide() {
+    carousel.style.transform = `translateX(${-index * 100}%)`;
+}
+
+function nextSlide() {
+    index = (index + 1) % carousel.children.length;
+    showSlide();
+}
+
+function prevSlide() {
+    index = (index - 1 + carousel.children.length) % carousel.children.length;
+    showSlide();
+}
+
+// Auto slide every 5 seconds (reduced from 2 seconds for better UX)
+setInterval(nextSlide, 5000);
+
+// Cart management
+let cartCount = 0;
+let cartItems = [];
+
+function updateCartCount() {
+    cartCount++;
+    document.getElementById("cartCount").textContent = cartCount;
+    document.getElementById("cartCountMobile").textContent = cartCount;
+}
+
+function addToCart(product) {
+    cartItems.push(product);
+    updateCartCount();
+    console.log('Added to cart:', product);
+    // Could add visual feedback here
+}
+
+// Mobile search toggle
+function toggleMobileSearch() {
+    const mobileSearch = document.getElementById('mobileSearch');
+    mobileSearch.classList.toggle('hidden');
+}
+
+// Search functionality
+async function performSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const query = searchInput.value.trim();
+    
+    if (query) {
+        try {
+            const products = await searchProducts(query);
+            displaySearchResults(products);
+        } catch (error) {
+            console.error('Search failed:', error);
+        }
+    }
+}
+
+async function performMobileSearch() {
+    const searchInput = document.getElementById('mobileSearchInput');
+    const query = searchInput.value.trim();
+    
+    if (query) {
+        try {
+            const products = await searchProducts(query);
+            displaySearchResults(products);
+        } catch (error) {
+            console.error('Mobile search failed:', error);
+        }
+    }
+}
+
+// API calls
+async function fetchProducts() {
+    try {
+        const response = await fetch('https://fakestoreapi.com/products');
+        const products = await response.json();
+        return products;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        return [];
+    }
+}
+
+async function fetchCategories() {
+    try {
+        const response = await fetch('https://fakestoreapi.com/products/categories');
+        const categories = await response.json();
+        return categories;
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        return [];
+    }
+}
+
+async function searchProducts(query) {
+    try {
+        const products = await fetchProducts();
+        return products.filter(product => 
+            product.title.toLowerCase().includes(query.toLowerCase()) ||
+            product.description.toLowerCase().includes(query.toLowerCase()) ||
+            product.category.toLowerCase().includes(query.toLowerCase())
+        );
+    } catch (error) {
+        console.error('Error searching products:', error);
+        return [];
+    }
+}
+
+// Display functions
+function displayFeaturedProducts(products) {
+    const container = document.getElementById('featuredProducts');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    // Show first 8 products
+    const featuredItems = products.slice(0, 8);
+    
+    featuredItems.forEach(product => {
+        const productCard = createProductCard(product);
+        container.appendChild(productCard);
+    });
+}
+
+function displayCategories(categories) {
+    const container = document.getElementById('categoriesSection');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    categories.forEach(category => {
+        const categoryCard = createCategoryCard(category);
+        container.appendChild(categoryCard);
+    });
+}
+
+function displaySearchResults(products) {
+    const container = document.getElementById('searchResults') || createSearchResultsContainer();
+    container.innerHTML = '';
+    
+    if (products.length === 0) {
+        container.innerHTML = '<p class="text-center text-gray-500 py-8">No products found.</p>';
+        return;
+    }
+    
+    products.forEach(product => {
+        const productCard = createProductCard(product);
+        container.appendChild(productCard);
+    });
+    
+    // Scroll to results
+    container.scrollIntoView({ behavior: 'smooth' });
+}
+
+function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow';
+    
+    card.innerHTML = `
+        <div class="aspect-w-1 aspect-h-1">
+            <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-contain p-4">
+        </div>
+        <div class="p-4">
+            <h3 class="text-sm font-medium text-gray-900 mb-2 line-clamp-2">${product.title}</h3>
+            <p class="text-xs text-gray-600 mb-2 capitalize">${product.category}</p>
+            <div class="flex items-center justify-between">
+                <span class="text-lg font-bold text-indigo-600">$${product.price}</span>
+                <button 
+                    onclick="addToCart(${JSON.stringify(product).replace(/"/g, '&quot;')})"
+                    class="add-to-cart bg-indigo-600 text-white px-3 py-1 rounded text-sm hover:bg-indigo-700 transition-colors"
+                >
+                    Add to Cart
+                </button>
+            </div>
+            <div class="flex items-center mt-2">
+                <span class="text-yellow-400">★</span>
+                <span class="text-sm text-gray-600 ml-1">${product.rating?.rate || 'N/A'} (${product.rating?.count || 0})</span>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+function createCategoryCard(category) {
+    const card = document.createElement('div');
+    card.className = 'bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg p-6 text-white hover:from-indigo-600 hover:to-purple-700 transition-all cursor-pointer';
+    
+    card.innerHTML = `
+        <h3 class="text-xl font-bold capitalize mb-2">${category}</h3>
+        <p class="text-indigo-100">Explore ${category} products</p>
+    `;
+    
+    card.addEventListener('click', () => {
+        // Could implement category filtering here
+        console.log('Category clicked:', category);
+    });
+    
+    return card;
+}
+
+function createSearchResultsContainer() {
+    const container = document.createElement('div');
+    container.id = 'searchResults';
+    container.className = 'container mx-auto px-4 py-8';
+    
+    const title = document.createElement('h2');
+    title.className = 'text-2xl font-bold mb-6';
+    title.textContent = 'Search Results';
+    
+    const grid = document.createElement('div');
+    grid.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
+    
+    container.appendChild(title);
+    container.appendChild(grid);
+    
+    // Insert after hero section
+    const heroSection = document.querySelector('section');
+    heroSection.parentNode.insertBefore(container, heroSection.nextSibling);
+    
+    return grid;
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('ShopSwift loading...');
+    
+    // Load products and categories
+    try {
+        const [products, categories] = await Promise.all([
+            fetchProducts(),
+            fetchCategories()
+        ]);
+        
+        displayFeaturedProducts(products);
+        displayCategories(categories);
+        
+        console.log('ShopSwift loaded successfully');
+    } catch (error) {
+        console.error('Failed to load ShopSwift data:', error);
+    }
+    
+    // Add event listeners for search on Enter key
+    const searchInput = document.getElementById('searchInput');
+    const mobileSearchInput = document.getElementById('mobileSearchInput');
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    }
+    
+    if (mobileSearchInput) {
+        mobileSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performMobileSearch();
+            }
+        });
+    }
+});
+
+// --- Navbar: Mobile menu toggle ---
+const mobileMenu = document.getElementById("mobile-menu");
+const openMenuBtn = document.querySelector("[command='show-modal']");
+const closeMenuBtn = document.querySelector("[command='close']");
+
+if (mobileMenu && openMenuBtn && closeMenuBtn) {
+  openMenuBtn.addEventListener("click", () => {
+    mobileMenu.showModal(); // opens <dialog>
+  });
+
+  closeMenuBtn.addEventListener("click", () => {
+    mobileMenu.close(); // closes <dialog>
+  });
+}
+
+// --- Keep navbar fixed & cart visible ---
+window.addEventListener("scroll", () => {
+  const header = document.querySelector("header");
+  if (window.scrollY > 10) {
+    header.classList.add("shadow-md"); // adds shadow after scrolling
+  } else {
+    header.classList.remove("shadow-md");
+  }
+});
