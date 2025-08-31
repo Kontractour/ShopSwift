@@ -3,31 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ShopSwift — Home</title>
+  <title>ShopSwift — Product Details</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="assets/logo.svg" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-  
-  <!-- ================= HEADER ================= -->
+  <!-- Header -->
   <header class="fixed inset-x-0 top-0 z-50 bg-white dark:bg-gray-900 shadow">
     <nav class="flex items-center justify-between py-2 px-4 lg:px-8">
-      <!-- Logo -->
       <a href="index.html" class="flex flex-col items-center">
         <img src="assets/logo.svg" alt="ShopSwift Logo" class="h-10 w-auto">
         <span class="font-bold text-blue-600 text-lg">ShopSwift</span>
       </a>
-
-      <!-- Desktop Menu -->
       <div class="hidden lg:flex lg:gap-x-12">
         <a href="index.html" class="font-semibold hover:text-indigo-600">Home</a>
         <a href="ProductPage.html" class="font-semibold hover:text-indigo-600">Products</a>
         <a href="#" class="font-semibold hover:text-indigo-600">About Us</a>
         <a href="#" class="font-semibold hover:text-indigo-600">Contact</a>
       </div>
-
-      <!-- Desktop Search -->
       <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:mr-8">
         <div class="relative">
           <input id="searchInput" type="text" placeholder="Search products..."
@@ -37,15 +31,10 @@
           </button>
         </div>
       </div>
-
-      <!-- Mobile Right Section -->
       <div class="flex items-center gap-3">
-        <!-- Search toggle -->
         <button onclick="toggleMobileSearch()" class="lg:hidden p-2 text-gray-700 dark:text-gray-200">
           <i class="fa fa-search"></i>
         </button>
-
-        <!-- Cart -->
         <div class="relative">
           <a href="cartlist.html" class="inline-flex items-center">
             <button id="cartBtn" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">
@@ -55,16 +44,12 @@
               class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
           </a>
         </div>
-
-        <!-- Mobile Menu Button -->
         <button command="show-modal" commandfor="mobile-menu"
           class="lg:hidden rounded-md p-2 text-gray-700 dark:text-gray-200">
           <i class="fa fa-bars"></i>
         </button>
       </div>
     </nav>
-
-    <!-- Mobile Search -->
     <div id="mobileSearch" class="hidden lg:hidden px-4 py-3 border-t dark:border-gray-700">
       <div class="relative">
         <input id="mobileSearchInput" type="text" placeholder="Search products..."
@@ -74,8 +59,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Mobile Menu -->
     <dialog id="mobile-menu" class="backdrop:bg-black/30 lg:hidden">
       <div class="fixed inset-y-0 right-0 z-50 w-72 bg-white dark:bg-gray-900 shadow-lg p-6 overflow-y-auto">
         <div class="flex justify-between items-center">
@@ -105,95 +88,23 @@
     </dialog>
   </header>
 
-  <!-- ================= HERO ================= -->
-  <section class="relative w-full h-[350px] mt-16">
-    <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
-      <div class="min-w-full h-[350px] relative">
-        <img src="assets/text-logo.jpg" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-center">
-          <h2 class="text-4xl font-bold mb-4">Welcome to ShopSwift</h2>
-          <p class="mb-6">We have all it takes at the best prices</p>
-          <a href="ProductPage.html" class="bg-indigo-600 px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700">Shop Now</a>
-        </div>
-      </div>
-      <div class="min-w-full h-[350px] relative">
-        <img src="assets/image.jpg.jpg" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <h2 class="text-4xl font-bold text-white">Electronics</h2>
-        </div>
-      </div>
-    </div>
-    <button onclick="prevSlide()" class="absolute left-5 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full">‹</button>
-    <button onclick="nextSlide()" class="absolute right-5 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full">›</button>
-  </section>
-
-  <!-- ================= MAIN ================= -->
-  <main class="pt-5">
-    <!-- Featured Products -->
+  <!-- Main Content -->
+  <main class="pt-20">
     <section class="py-16 bg-gray-50 dark:bg-gray-800">
       <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-12">Featured Products</h2>
-        <div id="featuredProducts" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-        <div class="text-center mt-8">
-          <a href="ProductPage.html" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700">View All Products</a>
+        <h2 class="text-3xl font-bold text-center mb-12">Product Details</h2>
+        <div class="max-w-4xl mx-auto mb-6">
+          <button onclick="goBack()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center">
+            <i class="fa fa-arrow-left mr-2"></i> Back
+          </button>
         </div>
+        <div id="productDetails" class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 max-w-4xl mx-auto"></div>
       </div>
-    </section>
-
-    <!-- Categories -->
-    <section class="py-16">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-12">Shop by Category</h2>
-        <div id="categoriesSection" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
-      </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="bg-gray-50 py-12 dark:bg-gray-800">
-      <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-8">What People Are Saying</h2>
-        <div class="grid gap-8 md:grid-cols-3">
-          <div class="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 text-center">
-            <div class="w-20 h-20 rounded-full border-2 border-blue-500 overflow-hidden mx-auto mb-4">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-full h-full object-cover">
-            </div>
-            <p class="italic">“This platform is amazing! I found exactly what I needed.”</p>
-            <h3 class="mt-4 font-semibold">John Doe</h3>
-            <span class="text-sm text-gray-500">Entrepreneur</span>
-          </div>
-          <div class="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 text-center">
-            <div class="w-20 h-20 rounded-full border-2 border-blue-500 overflow-hidden mx-auto mb-4">
-              <img src="https://randomuser.me/api/portraits/women/45.jpg" class="w-full h-full object-cover">
-            </div>
-            <p class="italic">“The experience was seamless. Highly recommended!”</p>
-            <h3 class="mt-4 font-semibold">Jane Smith</h3>
-            <span class="text-sm text-gray-500">Designer</span>
-          </div>
-          <div class="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 text-center">
-            <div class="w-20 h-20 rounded-full border-2 border-blue-500 overflow-hidden mx-auto mb-4">
-              <img src="https://randomuser.me/api/portraits/men/76.jpg" class="w-full h-full object-cover">
-            </div>
-            <p class="italic">“Excellent service! The support team was really helpful.”</p>
-            <h3 class="mt-4 font-semibold">Michael Lee</h3>
-            <span class="text-sm text-gray-500">Software Engineer</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="py-16 bg-indigo-600 text-white text-center">
-      <h2 class="text-2xl font-bold mb-4">Join Our Newsletter</h2>
-      <p class="mb-6">Stay updated with the latest deals and arrivals</p>
-      <form class="flex flex-col sm:flex-row justify-center gap-4">
-        <input type="email" placeholder="Enter your email" class="px-4 py-2 rounded-lg text-gray-800 w-full sm:w-80">
-        <button class="bg-black px-6 py-2 rounded-lg hover:bg-gray-800">Subscribe</button>
-      </form>
     </section>
   </main>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-gray-900 text-gray-300 py-10 mt-16">
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-10">
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
       <div>
         <h2 class="text-2xl font-bold text-white">ShopSwift</h2>
@@ -224,8 +135,8 @@
     </div>
   </footer>
 
-  <!-- ================= SCRIPTS ================= -->
+  <!-- Scripts -->
   <script src="cart-core.js"></script>
-  <script src="index.js"></script>
+  <script src="product-details.js"></script>
 </body>
 </html>

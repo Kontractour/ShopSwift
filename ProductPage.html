@@ -3,273 +3,139 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ShopSwift — Home</title>
+  <title>ShopSwift — Products</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="ProductPage.css" />
   <link rel="icon" href="assets/logo.svg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 text-gray-800">
-  
-  <div class="bg-white dark:bg-gray-900">
-    <header class="absolute inset-x-0 top-0 z-50">
-      <nav aria-label="Global" class="flex items-center justify-between p-6 lg:px-8">
-        <div class="flex lg:flex-1">
-          <a href="index.html" class="-m-1.5 p-1.5">
-            <span class="sr-only">logo</span>
-            <img src="assets/logo.svg" alt="Logo" class="h-12 w-auto">
-          </a>
-        </div>
-
-        <!-- Desktop menu -->
-        <div class="hidden lg:flex lg:gap-x-12">
-          <a href="index.html" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Home</a>
-          <a href="ProductPage.html" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Products</a>
-          <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">About Us</a>
-          <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Contact</a>
-        </div>
-
-        <!-- Desktop search -->
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:mr-8">
-          <div class="relative">
-            <input 
-              type="text" 
-              id="searchInput"
-              placeholder="Search products..." 
-              class="w-64 px-4 py-2 pr-10 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-            >
-            <button 
-              onclick="performSearch()"
-              class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Cart + Menu Toggle + Search (Mobile) -->
-        <div class="flex items-center gap-3">
-          <!-- Mobile Search Toggle -->
-          <div class="lg:hidden">
-            <button onclick="toggleMobileSearch()" class="p-2 text-gray-700 dark:text-gray-200">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Cart -->
-          <div class="relative">
-            <a href="cartList.html"><button id="cartBtn" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-              🛒
-            </button>
-            <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-              0
-            </span>
-            </a>
-          </div>
-
-          <!-- Mobile menu toggle -->
-          <div class="lg:hidden">
-            <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200">
-              <span class="sr-only">Open main menu</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-6">
-                <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <!-- Mobile Search Bar -->
-      <div id="mobileSearch" class="hidden lg:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-3">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+  <!-- Header -->
+  <header class="fixed inset-x-0 top-0 z-50 bg-white dark:bg-gray-900 shadow">
+    <nav class="flex items-center justify-between py-2 px-4 lg:px-8">
+      <a href="index.html" class="flex flex-col items-center">
+        <img src="assets/logo.svg" alt="ShopSwift Logo" class="h-10 w-auto">
+        <span class="font-bold text-blue-600 text-lg">ShopSwift</span>
+      </a>
+      <div class="hidden lg:flex lg:gap-x-12">
+        <a href="index.html" class="font-semibold hover:text-indigo-600">Home</a>
+        <a href="ProductPage.html" class="font-semibold hover:text-indigo-600">Products</a>
+        <a href="#" class="font-semibold hover:text-indigo-600">About Us</a>
+        <a href="#" class="font-semibold hover:text-indigo-600">Contact</a>
+      </div>
+      <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:mr-8">
         <div class="relative">
-          <input 
-            type="text" 
-            id="mobileSearchInput"
-            placeholder="Search products..." 
-            class="w-full px-4 py-2 pr-10 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-          >
-          <button 
-            onclick="performMobileSearch()"
-            class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
+          <input id="searchInput" type="text" placeholder="Search products..."
+            class="w-64 px-4 py-2 pr-10 text-sm border rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+          <button onclick="performSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-500">
+            <i class="fa fa-search"></i>
           </button>
         </div>
       </div>
-
-      <!-- Mobile Menu -->
-      <el-dialog>
-        <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
-          <div tabindex="0" class="fixed inset-0 focus:outline-none">
-            <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-80 overflow-y-auto bg-white p-6 ring-1 ring-gray-900/10 dark:bg-gray-900 dark:ring-gray-100/10">
-              <div class="flex items-center justify-between">
-                <a href="index.html" class="-m-1.5 p-1.5">
-                  <span class="sr-only">Your Company</span>
-                  <img src="assets/logo.svg" alt="" class="h-8 w-auto" />
-                </a>
-                <button type="button" command="close" commandfor="mobile-menu" class="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-200">
-                  <span class="sr-only">Close menu</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-6">
-                    <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </button>
-              </div>
-              <div class="mt-6 flow-root">
-                <div class="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
-                  <div class="space-y-2 py-6">
-                    <a href="index.html" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Home</a>
-                    <a href="ProductPage.html" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Products</a>
-                    <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">About Us</a>
-                    <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">Contact</a>
-                  </div>
-                  <div class="py-6">
-                    <div class="mt-6">
-                      <a href="cartList.html">
-                        <button id="cartBtnMobile" class="w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                          🛒 Cart (<span id="cartCountMobile">0</span>)
-                        </button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </el-dialog-panel>
-          </div>
-        </dialog>
-      </el-dialog>
-    </header>
-
-    <!-- Hero Carousel -->
-    <section class="relative w-full h-[500px] overflow-hidden">
-      <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
-        <!-- Slide 1 -->
-        <div class="min-w-full h-[500px] relative">
-          <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f" 
-               alt="Electronics" 
-               class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-            <h2 class="text-4xl font-bold text-white">Electronics</h2>
-          </div>
+      <div class="flex items-center gap-3">
+        <button onclick="toggleMobileSearch()" class="lg:hidden p-2 text-gray-700 dark:text-gray-200">
+          <i class="fa fa-search"></i>
+        </button>
+        <div class="relative">
+          <a href="cartlist.html" class="inline-flex items-center">
+            <button id="cartBtn" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">
+              🛒
+            </button>
+            <span id="cartCount"
+              class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+          </a>
         </div>
-        <!-- Slide 2 -->
-        <div class="min-w-full h-[500px] relative">
-          <img src="assets/88df9864-d9c7-4620-aa7d-356f88a63e6d.jpg" 
-               alt="Clothing" 
-               class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-            <h2 class="text-4xl font-bold text-white">Fashion</h2>
-          </div>
+        <button command="show-modal" commandfor="mobile-menu"
+          class="lg:hidden rounded-md p-2 text-gray-700 dark:text-gray-200">
+          <i class="fa fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+    <div id="mobileSearch" class="hidden lg:hidden px-4 py-3 border-t dark:border-gray-700">
+      <div class="relative">
+        <input id="mobileSearchInput" type="text" placeholder="Search products..."
+          class="w-full px-4 py-2 pr-10 text-sm border rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+        <button onclick="performMobileSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-500">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+    <dialog id="mobile-menu" class="backdrop:bg-black/30 lg:hidden">
+      <div class="fixed inset-y-0 right-0 z-50 w-72 bg-white dark:bg-gray-900 shadow-lg p-6 overflow-y-auto">
+        <div class="flex justify-between items-center">
+          <a href="index.html" class="flex items-center space-x-2">
+            <img src="assets/logo.svg" alt="Logo" class="h-8 w-auto">
+            <span class="font-bold text-blue-600">ShopSwift</span>
+          </a>
+          <button command="close" commandfor="mobile-menu" class="text-gray-600 dark:text-gray-200">
+            <i class="fa fa-times"></i>
+          </button>
         </div>
-        <!-- Slide 3 -->
-        <div class="min-w-full h-[500px] relative">
-          <img src="assets/ShopSwift-logo.jpg" 
-               alt="Shoes" 
-               class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-            <h2 class="text-4xl font-bold text-white">Shoes</h2>
-          </div>
-        </div>
-        <!-- Slide 4 -->
-        <div class="min-w-full h-[500px] relative">
-          <img src="assets/image.jpg (1).jpg" 
-               alt="Furniture" 
-               class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-            <h2 class="text-4xl font-bold text-white">Furniture</h2>
-          </div>
+        <nav class="mt-6 space-y-4">
+          <a href="index.html" class="block font-semibold hover:text-indigo-600">Home</a>
+          <a href="ProductPage.html" class="block font-semibold hover:text-indigo-600">Products</a>
+          <a href="#" class="block font-semibold hover:text-indigo-600">About Us</a>
+          <a href="#" class="block font-semibold hover:text-indigo-600">Contact</a>
+        </nav>
+        <div class="mt-6">
+          <a href="cartlist.html" class="block">
+            <button id="cartBtnMobile"
+              class="w-full bg-indigo-600 text-white rounded-md py-2 font-semibold hover:bg-indigo-500">
+              🛒 Cart (<span id="cartCountMobile">0</span>)
+            </button>
+          </a>
         </div>
       </div>
+    </dialog>
+  </header>
 
-      <!-- Controls -->
-      <button onclick="prevSlide()" class="absolute left-5 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full">&#10094;</button>
-      <button onclick="nextSlide()" class="absolute right-5 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full">&#10095;</button>
+  <!-- Main Content -->
+  <main class="pt-20">
+    <section class="py-16 bg-gray-50 dark:bg-gray-800">
+      <div class="container mx-auto px-4">
+        <!-- Categories Section (Optional) -->
+        <h2 class="text-3xl font-bold text-center mb-12">Shop by Category</h2>
+        <div id="categoriesSection" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12"></div>
+        <!-- Products Section -->
+        <h2 class="text-3xl font-bold text-center mb-12">Products</h2>
+        <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+      </div>
     </section>
-
-   <!-- Products Section -->
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-  <div class="mb-8 text-center">
-    <h2 id="sectionTitle" class="text-3xl font-bold text-gray-900 dark:text-white">All Products</h2>
-    <p class="mt-2 text-gray-600 dark:text-gray-400">Discover our amazing collection</p>
-  </div>
-      <!-- Loading -->
-      <div id="loading" class="text-center py-8">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-        <p class="mt-4 text-gray-600">Loading products...</p>
-      </div>
-
-      <!-- No Results -->
-      <div id="noResults" class="hidden text-center py-8">
-        <p class="text-gray-600 text-lg">No products found matching your search.</p>
-        <button onclick="clearSearch()" class="mt-4 text-indigo-600 hover:text-indigo-500">Clear search</button>
-      </div>
-
-      <!-- Products Grid -->
-      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <!-- Products will be loaded here -->
-      </div>
-    </main>
-  </div>
+  </main>
 
   <!-- Footer -->
-<footer class="bg-gray-900 text-gray-300 py-10 mt-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-
-    <!-- Brand / About -->
-    <div>
-      <h2 class="text-2xl font-bold text-white">ShopSwift</h2>
-      <p class="mt-3 text-sm text-gray-400">
-        Bringing you the best shopping experience with fast delivery and secure checkout.
-      </p>
-      <p class="mt-3 text-sm text-gray-500">© 2025 ShopSwift. All rights reserved.</p>
-    </div>
-
-    <!-- Quick Links -->
-    <div>
-      <h3 class="text-lg font-semibold text-white mb-3">Quick Links</h3>
-      <ul class="space-y-2">
-        <li><a href="index.html" class="hover:text-white transition">Home</a></li>
-        <li><a href="ProductPage.html" class="hover:text-white transition">Products</a></li>
-        <li><a href="#" class="hover:text-white transition">About Us</a></li>
-        <li><a href="#" class="hover:text-white transition">Contact</a></li>
-      </ul>
-    </div>
-
-    <!-- Social Media + Contact -->
-    <div>
-      <h3 class="text-lg font-semibold text-white mb-3">Connect with Us</h3>
-      <div class="flex space-x-4 mb-4">
-        <a href="https://github.com/Kontractour" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
-          <i class="fab fa-github fa-lg"></i>
-        </a>
-        <a href="https://www.facebook.com/godswill.clement.315/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
-          <i class="fab fa-facebook fa-lg"></i>
-        </a>
-        <a href="https://x.com/Kontractour" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
-          <i class="fab fa-twitter fa-lg"></i>
-        </a>
-        <a href="https://www.instagram.com/willz_clement/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
-          <i class="fab fa-instagram fa-lg"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/godswill-okereke-3ba33b37a" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition">
-          <i class="fab fa-linkedin fa-lg"></i>
-        </a>
+  <footer class="bg-gray-900 text-gray-300 py-10">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+      <div>
+        <h2 class="text-2xl font-bold text-white">ShopSwift</h2>
+        <p class="mt-3 text-sm">Bringing you the best shopping experience with fast delivery and secure checkout.</p>
+        <p class="mt-3 text-xs">© 2025 ShopSwift. All rights reserved.</p>
       </div>
-      <p class="text-sm text-gray-400">Email: okerekegodwill7@gmail.com</p>
-      <p class="text-sm text-gray-400">Phone: +234 810 553 3755</p>
+      <div>
+        <h3 class="text-lg font-semibold mb-3">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="index.html" class="hover:text-white">Home</a></li>
+          <li><a href="ProductPage.html" class="hover:text-white">Products</a></li>
+          <li><a href="#" class="hover:text-white">About Us</a></li>
+          <li><a href="#" class="hover:text-white">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-3">Connect</h3>
+        <div class="flex space-x-4 mb-4">
+          <a href="https://github.com/Kontractour" class="hover:text-white"><i class="fab fa-github"></i></a>
+          <a href="https://www.facebook.com/godswill.clement.315/" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+          <a href="https://x.com/Kontractour" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/willz_clement/" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/in/godswill-okereke-3ba33b37a" class="hover:text-white"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p class="text-sm">okerekegodwill7@gmail.com</p>
+        <p class="text-sm">+234 810 553 3755</p>
+      </div>
     </div>
-  </div>
-</footer>
+  </footer>
 
-
-
-
-   <script src="ProductPage.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+  <!-- Scripts -->
+  <script src="cart-core.js"></script>
+  <script src="ProductPage.js"></script>
 </body>
 </html>

@@ -1,97 +1,234 @@
+// ================= CHECKOUT PAGE FUNCTIONALITY =================
+// This is CheckOut.js for the checkout.html page
 
-  tailwind.config = {
-    darkMode: 'media',
-  };
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait for cart-core.js to initialize
+  if (!window.cartManager) {
+    console.error('Cart Manager not initialized');
+    return;
+  }
+  
+  console.log('Loading checkout page...');
+  updateOrderSummary();
+  setupFormValidation();
+  setupShippingChange();
+  
+  // Redirect if cart is empty
+  if (window.cartManager.cart.length === 0) {
+    alert('Your cart is empty. Redirecting to products page.');
+    window.location.href = 'ProductPage.html';
+  }
+});
 
-  const form = document.getElementById("checkoutForm");
-  const shippingSelect = document.getElementById("shipping");
-  const shippingCost = document.getElementById("shippingCost");
-  const total = document.getElementById("total");
-  const successAlert = document.getElementById("successAlert");
+// Update order summary
+function updateOrderSummary() {
+  const subtotal = window.cartManager.getCartTotal();
+  const shippingSelect = document.getElementById('shipping');
+  const shippingCost = shippingSelect ? parseFloat(shippingSelect.value) : 10;
+  const total = subtotal + shippingCost;
 
-  let subtotal = 120;
+  // Update display elements
+  const subtotalElement = document.getElementById('subtotal');
+  const shippingElement = document.getElementById('shippingCost');
+  const totalElement = document.getElementById('total');
 
-  // Update total dynamically
-  shippingSelect.addEventListener("change", () => {
-    let ship = parseFloat(shippingSelect.value);
-    shippingCost.textContent = `$${ship.toFixed(2)}`;
-    total.textContent = `$${(subtotal + ship).toFixed(2)}`;
+  if (subtotalElement) subtotalElement.textContent = formatPrice(subtotal);
+  if (shippingElement) shippingElement.textContent = formatPrice(shippingCost);
+  if (totalElement) totalElement.textContent = formatPrice(total);
+}
+
+// Setup shipping method change handler
+function setupShippingChange() {
+  const shippingSelect = document.getElementById('shipping');
+  if (shippingSelect) {
+    shippingSelect.addEventListener('change', updateOrderSummary);
+  }
+}
+
+// Setup form validation
+function setupFormValidation() {
+  const form = document.getElementById('checkoutForm');
+  if (!form) return;
+
+  // Real-time validation
+  const inputs = form.querySelectorAll('input[required]');
+  inputs.forEach(input => {
+    input.addEventListener('blur', () => validateField(input));
+    input.addEventListener('input', () => clearFieldError(input));
   });
 
-  // Validation helper
-  function validateField(id, errorId) {
-    const input = document.getElementById(id);
-    const error = document.getElementById(errorId);
-    if (!input.checkValidity()) {
-      error.classList.remove("hidden");
-      return false;
-    } else {
-      error.classList.add("hidden");
-      return true;
-    }
+  // Card number formatting
+  const cardNumberInput = document.getElementById('cardNumber');
+  if (cardNumberInput) {
+    cardNumberInput.addEventListener('input', formatCardNumber);
   }
 
-  // Restrict ZIP to 1–5 digits
-  const zip = document.getElementById("zip");
-  zip.addEventListener("input", () => {
-    zip.value = zip.value.replace(/\D/g, "").slice(0, 5);
-  });
+  // Expiry formatting
+  const expiryInput = document.getElementById('expiry');
+  if (expiryInput) {
+    expiryInput.addEventListener('input', formatExpiry);
+  }
 
-  // Card number (digits only, any length)
-  const cardNumber = document.getElementById("cardNumber");
-  cardNumber.addEventListener("input", () => {
-    cardNumber.value = cardNumber.value.replace(/\D/g, "");
-  });
-
-  // Expiry MM/YY with auto slash
-  const expiry = document.getElementById("expiry");
-  expiry.addEventListener("input", () => {
-    let value = expiry.value.replace(/\D/g, "").slice(0, 4);
-    if (value.length >= 3) {
-      expiry.value = value.slice(0, 2) + "/" + value.slice(2);
-    } else {
-      expiry.value = value;
-    }
-  });
-
-  // CVV: 3 digits max
-  const cvv = document.getElementById("cvv");
-  cvv.addEventListener("input", () => {
-    cvv.value = cvv.value.replace(/\D/g, "").slice(0, 3);
-  });
+  // CVV validation
+  const cvvInput = document.getElementById('cvv');
+  if (cvvInput) {
+    cvvInput.addEventListener('input', formatCVV);
+  }
 
   // Form submission
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  form.addEventListener('submit', handleFormSubmit);
+}
 
-    let isValid = true;
-    isValid = validateField("firstName", "errorFirstName") && isValid;
-    isValid = validateField("lastName", "errorLastName") && isValid;
-    isValid = validateField("address", "errorAddress") && isValid;
-    isValid = validateField("city", "errorCity") && isValid;
-    isValid = validateField("zip", "errorZip") && isValid;
-    isValid = validateField("cardNumber", "errorCardNumber") && isValid;
-    isValid = validateField("expiry", "errorExpiry") && isValid;
-    isValid = validateField("cvv", "errorCvv") && isValid;
+// Validate individual field
+function validateField(input) {
+  const value = input.value.trim();
+  const fieldId = input.id;
+  let isValid = true;
+  let errorMessage = '';
 
-    if (!isValid) return;
+  switch (fieldId) {
+    case 'firstName':
+    case 'lastName':
+      isValid = value.length >= 2;
+      errorMessage = `${fieldId === 'firstName' ? 'First' : 'Last'} name must be at least 2 characters.`;
+      break;
+    
+    case 'address':
+      isValid = value.length >= 5;
+      errorMessage = 'Please enter a valid address.';
+      break;
+    
+    case 'city':
+      isValid = value.length >= 2;
+      errorMessage = 'Please enter a valid city.';
+      break;
+    
+    case 'zip':
+      isValid = /^\d{5}(-\d{4})?$/.test(value);
+      errorMessage = 'Please enter a valid ZIP code (12345 or 12345-6789).';
+      break;
+    
+    case 'cardNumber':
+      const cleanCard = value.replace(/\s/g, '');
+      isValid = /^\d{16}$/.test(cleanCard);
+      errorMessage = 'Please enter a valid 16-digit card number.';
+      break;
+    
+    case 'expiry':
+      isValid = /^(0[1-9]|1[0-2])\/\d{2}$/.test(value);
+      errorMessage = 'Please enter a valid expiry date (MM/YY).';
+      break;
+    
+    case 'cvv':
+      isValid = /^\d{3}$/.test(value);
+      errorMessage = 'Please enter a valid 3-digit CVV.';
+      break;
+  }
 
-    // ✅ Show success alert
-    successAlert.classList.remove("hidden");
-    setTimeout(() => {
-      successAlert.classList.add("hidden");
-      form.reset(); // clear form after success
-    }, 3000);
-  });
+  showFieldError(fieldId, isValid ? '' : errorMessage);
+  return isValid;
+}
 
-  // Responsive order summary cut on large screens
-  const orderSummary = document.getElementById("orderSummary");
-  function handleResize() {
-    if (window.innerWidth >= 1024) {
-      orderSummary.classList.add("max-h-64", "overflow-y-auto");
+// Show field error
+function showFieldError(fieldId, message) {
+  const errorElement = document.getElementById(`error${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`);
+  if (errorElement) {
+    if (message) {
+      errorElement.textContent = message;
+      errorElement.classList.remove('hidden');
     } else {
-      orderSummary.classList.remove("max-h-64", "overflow-y-auto");
+      errorElement.classList.add('hidden');
     }
   }
-  window.addEventListener("resize", handleResize);
-  handleResize(); // run on load
+}
+
+// Clear field error
+function clearFieldError(input) {
+  const fieldId = input.id;
+  const errorElement = document.getElementById(`error${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`);
+  if (errorElement) {
+    errorElement.classList.add('hidden');
+  }
+}
+
+// Format card number (add spaces every 4 digits)
+function formatCardNumber(e) {
+  let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+  let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+  e.target.value = formattedValue;
+}
+
+// Format expiry date (MM/YY)
+function formatExpiry(e) {
+  let value = e.target.value.replace(/\D/g, '');
+  if (value.length >= 2) {
+    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+  }
+  e.target.value = value;
+}
+
+// Format CVV (numbers only, max 3 digits)
+function formatCVV(e) {
+  e.target.value = e.target.value.replace(/\D/g, '').substring(0, 3);
+}
+
+// Handle form submission
+function handleFormSubmit(e) {
+  e.preventDefault();
+  
+  // Validate all fields
+  const form = e.target;
+  const inputs = form.querySelectorAll('input[required]');
+  let isFormValid = true;
+
+  inputs.forEach(input => {
+    if (!validateField(input)) {
+      isFormValid = false;
+    }
+  });
+
+  if (!isFormValid) {
+    alert('Please fix the errors in the form before submitting.');
+    return;
+  }
+
+  // Process the order
+  processOrder();
+}
+
+// Process order
+function processOrder() {
+  // Show loading state
+  const submitButton = document.querySelector('button[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Processing...';
+  }
+
+  // Simulate order processing
+  setTimeout(() => {
+    // Clear cart
+    window.cartManager.clearCart();
+    
+    // Show success alert
+    showSuccessAlert();
+    
+    // Redirect to home page after 3 seconds
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 3000);
+  }, 2000);
+}
+
+// Show success alert
+function showSuccessAlert() {
+  const alert = document.getElementById('successAlert');
+  if (alert) {
+    alert.classList.remove('hidden');
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+      alert.classList.add('hidden');
+    }, 3000);
+  }
+}
