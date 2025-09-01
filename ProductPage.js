@@ -1,168 +1,256 @@
-// Fetch and display products with retry logic
-async function fetchProductsWithRetry(endpoint, retries = 3, delay = 1000) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const products = await fetchData(endpoint);
-      if (Array.isArray(products) && products.length > 0) {
-        return products;
-      }
-      console.warn(`Attempt ${i + 1}: No products returned for ${endpoint}`);
-    } catch (error) {
-      console.error(`Attempt ${i + 1}: Error fetching ${endpoint}:`, error.message);
-    }
-    if (i < retries - 1) {
-      console.log(`Retrying ${endpoint} in ${delay}ms...`);
-      await new Promise(resolve => setTimeout(resolve, delay));
-    }
+// API Functions
+async function fetchProducts() {
+  try {
+    const response = await fetch('https://fakestoreapi.com/products');
+    const products = await response.json();
+    console.log('Fetched products:', products);
+    return products;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return [];
   }
-  console.error(`Failed to fetch products from ${endpoint} after ${retries} attempts`);
-  return [];
 }
 
-// Fetch and display categories with static images
+async function fetchCategories() {
+  try {
+    const response = await fetch('https://fakestoreapi.com/products/categories');
+    const categories = await response.json();
+    console.log('Fetched categories:', categories);
+    return categories;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return [];
+  }
+}
+
+async function fetchProduct(id) {
+  try {
+    const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+    const product = await response.json();
+    console.log(`Fetched product ${id}:`, product);
+    return product;
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    return null;
+  }
+}
+
+// Display categories with images
 async function displayCategories() {
   const container = document.getElementById('categoriesSection');
   if (!container) {
-    console.log('No #categoriesSection found on this page; skipping category display');
+    console.error('Error: #categoriesSection element not found');
     return;
   }
 
-  container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400">Loading categories...</p>';
-  const categories = await fetchData('/products/categories');
+  container.innerHTML = '<div class="col-span-full text-center text-gray-600 dark:text-gray-400">Loading categories...</div>';
+  
+  const categories = await fetchCategories();
+  const products = await fetchProducts();
 
-  if (!Array.isArray(categories) || categories.length === 0) {
-    container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400">No categories available. Please try again later.</p>';
-    console.warn('Categories API returned:', categories);
+  if (!categories.length) {
+    container.innerHTML = '<div class="col-span-full text-center text-gray-600 dark:text-gray-400">No categories available.</div>';
     return;
   }
 
-  // Static images for categories with multiple fallbacks
+  // Unsplash images for categories
   const categoryImages = {
-    electronics: 'assets/electronics.jpg',
-    jewelery: 'assets/jewelery.jpg',
-    "men's clothing": 'assets/mens-clothing.jpg',
-    "women's clothing": 'assets/womens-clothing.jpg'
+    "electronics": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=300&fit=crop",
+    "jewelery": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=300&fit=crop",
+    "men's clothing": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop",
+    "women's clothing": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=300&fit=crop"
   };
 
-  const fallbackImage = 'assets/fallback.jpg';
-  const secondaryFallback = 'https://via.placeholder.com/150?text=';
+  const fallbackImage = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop';
 
-  const categoryData = categories.map(category => ({
-    category,
-    image: categoryImages[category] || `${secondaryFallback}${encodeURIComponent(category)}`
-  }));
+  container.innerHTML = categories.map(category => {
+    const normalizedCategory = category.trim().toLowerCase();
+    const categoryProducts = products.filter(p => p.category.trim().toLowerCase() === normalizedCategory);
+    const productCount = categoryProducts.length;
+    console.log(`Category: ${category}, Product count: ${productCount}, Products:`, categoryProducts);
+    const image = categoryImages[normalizedCategory] || fallbackImage;
+    const escapedCategory = category.replace(/'/g, "\\'");
+    const displayCategory = category
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' '); // Capitalize for display (e.g., "Women's Clothing")
 
-  container.innerHTML = categoryData.map(({ category, image }) => `
-    <a href="ProductPage.html?category=${encodeURIComponent(category)}" class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 text-center hover:shadow-lg transition-shadow">
-      <img src="${image}" alt="${category}" class="w-full h-32 object-contain mb-4 rounded" onload="console.log('Image loaded for ${category}: ${image}')" onerror="this.src='${fallbackImage}'; this.onerror = () => { this.src='${secondaryFallback}${encodeURIComponent(category)}'; console.error('Image failed to load for ${category}: ${image}, using secondary fallback'); }; console.error('Image failed to load for ${category}: ${image}, trying fallback')">
-      <h3 class="font-bold text-xl capitalize">${category}</h3>
-    </a>
-  `).join('');
-  console.log('Categories loaded with images:', categoryData);
-
-  // Verify DOM rendering and image visibility
-  setTimeout(() => {
-    const images = container.querySelectorAll('img');
-    console.log(`Category images in DOM: ${images.length}`);
-    images.forEach(img => {
-      console.log(`Image in DOM: ${img.src}, Visible: ${img.offsetWidth > 0 && img.offsetHeight > 0}`);
-      if (img.complete && img.naturalWidth === 0) {
-        console.error(`Image broken for ${img.alt}: ${img.src}`);
-      }
-    });
-  }, 1000);
+    return `
+      <div class="group cursor-pointer transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+           onclick="filterByCategory('${escapedCategory}')">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+          <div class="aspect-w-16 aspect-h-12 relative">
+            <img src="${image}" alt="${displayCategory}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300"></div>
+            <div class="absolute bottom-4 left-4 text-white">
+              <h3 class="text-lg font-bold capitalize">${displayCategory}</h3>
+              <p class="text-sm opacity-90">${productCount} products</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
+// Display products
 async function displayProducts() {
-  const container = document.getElementById('productList');
-  if (!container) {
-    console.error('Error: #productList element not found in DOM');
+  const resultsSection = document.getElementById('resultsSection');
+  const productsSection = document.getElementById('productsSection');
+  const productList = document.getElementById('productList');
+  const productListDefault = document.getElementById('productListDefault');
+  const heroTitle = document.getElementById('heroTitle');
+  const heroText = document.getElementById('heroText');
+  const categoriesSectionContainer = document.getElementById('categoriesSectionContainer');
+  const categoriesText = document.getElementById('categoriesText');
+  const toggleCategories = document.getElementById('toggleCategories');
+
+  if (!productList || !productListDefault || !resultsSection || !productsSection || !heroTitle || !heroText || !categoriesSectionContainer || !categoriesText || !toggleCategories) {
+    console.error('Required DOM elements missing');
     return;
   }
-
-  // Show loading spinner
-  container.innerHTML = `
-    <div class="text-center py-8">
-      <i class="fa fa-spinner fa-spin text-3xl text-indigo-600"></i>
-      <p class="text-gray-600 dark:text-gray-400 mt-2">Loading products...</p>
-    </div>
-  `;
 
   const urlParams = new URLSearchParams(window.location.search);
-  const category = urlParams.get('category');
-  const search = urlParams.get('search');
-
-  let endpoint = '/products';
-  if (category) {
-    endpoint = `/products/category/${encodeURIComponent(category)}`;
-  } else if (search) {
-    endpoint = '/products';
+  const searchQuery = urlParams.get('search');
+  const categoryFilter = urlParams.get('category');
+  
+  // Adjust page flow for filtered view
+  if (searchQuery || categoryFilter) {
+    resultsSection.classList.remove('hidden');
+    productsSection.classList.add('hidden');
+    heroTitle.textContent = searchQuery ? 'Search Results' : `Products in ${categoryFilter}`;
+    heroText.textContent = searchQuery ? 'Showing products matching your search query.' : `Explore our collection in the ${categoryFilter} category.`;
+    categoriesText.classList.add('hidden');
+    toggleCategories.classList.remove('hidden');
+    categoriesSectionContainer.classList.add('mt-4');
+  } else {
+    resultsSection.classList.add('hidden');
+    productsSection.classList.remove('hidden');
+    heroTitle.textContent = 'Discover Amazing Products';
+    heroText.textContent = 'Explore our curated collection of high-quality products across multiple categories. From the latest electronics to stylish fashion, we have everything you need at unbeatable prices.';
+    categoriesText.classList.remove('hidden');
+    toggleCategories.classList.add('hidden');
+    categoriesSectionContainer.classList.remove('mt-4');
   }
-  console.log(`Fetching products from endpoint: ${endpoint}`);
 
-  const products = await fetchProductsWithRetry(endpoint);
-  if (!Array.isArray(products)) {
-    container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400">Error loading products. Please try again later.</p>';
-    console.error('Products data is not an array:', products);
+  const container = (searchQuery || categoryFilter) ? productList : productListDefault;
+  container.innerHTML = '<div class="col-span-full text-center text-gray-600 dark:text-gray-400">Loading products...</div>';
+  
+  let products = await fetchProducts();
+
+  if (!products.length) {
+    container.innerHTML = '<div class="col-span-full text-center text-gray-600 dark:text-gray-400">No products available.</div>';
     return;
   }
 
-  let filteredProducts = products;
-  if (search) {
-    const query = search.toLowerCase();
-    filteredProducts = products.filter(product =>
-      product.title.toLowerCase().includes(query) || product.description.toLowerCase().includes(query)
+  // Normalize category names to handle spaces and apostrophes
+  const normalizeCategory = (cat) => cat.toLowerCase().replace(/['\s]+/g, ' ').trim();
+  
+  // Apply filters
+  if (searchQuery) {
+    products = products.filter(product => 
+      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    console.log(`Filtered products for search "${search}": ${filteredProducts.length}`);
   }
 
-  if (filteredProducts.length === 0) {
-    container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400">No products found.</p>';
-    console.warn(`No products returned for endpoint: ${endpoint}`);
+  if (categoryFilter) {
+    const normalizedFilter = normalizeCategory(decodeURIComponent(categoryFilter));
+    products = products.filter(product => normalizeCategory(product.category) === normalizedFilter);
+    console.log(`Filtering by category: ${normalizedFilter}, found ${products.length} products`);
+  }
+
+  if (!products.length) {
+    container.innerHTML = '<div class="col-span-full text-center text-gray-600 dark:text-gray-400">No products found matching your criteria.</div>';
     return;
   }
 
-  container.innerHTML = filteredProducts.map(product => `
-    <div class="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
-      <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-contain p-4" onload="console.log('Product image loaded: ${product.image}')" onerror="console.error('Product image failed to load: ${product.image}')">
-      <div class="p-4">
-        <h3 class="font-semibold text-lg truncate">${product.title}</h3>
-        <p class="text-indigo-600 font-bold mt-2">$${product.price.toFixed(2)}</p>
-        <div class="mt-4 flex justify-between">
-          <a href="product-details.html?id=${product.id}" class="text-blue-500 hover:underline">View Details</a>
-          <button onclick="addToCart(${product.id}) && showAddedFeedback(this)" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm">Add to Cart</button>
+  container.innerHTML = products.map(product => `
+    <div class="group transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+        <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover">
+        <div class="p-4">
+          <h3 class="text-lg font-semibold mb-2 line-clamp-2">${product.title}</h3>
+          <p class="text-gray-600 dark:text-gray-300 text-sm mb-2 capitalize">${product.category}</p>
+          <div class="flex items-center justify-between">
+            <span class="text-indigo-600 font-bold text-lg">$${product.price.toFixed(2)}</span>
+            <div class="flex items-center text-yellow-500 text-sm">
+              <i class="fa fa-star"></i>
+              <span class="ml-1">${product.rating?.rate || 'N/A'} (${product.rating?.count || 0})</span>
+            </div>
+          </div>
+          <div class="mt-3 flex gap-2">
+            <button onclick="addToCartWithFeedback(${product.id}, this)" 
+              class="flex-1 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition-colors duration-200 text-sm">
+              Add to Cart
+            </button>
+            <a href="product-details.html?id=${product.id}" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 text-sm text-center">
+              View Details
+            </a>
+          </div>
         </div>
       </div>
     </div>
   `).join('');
-  console.log(`Products loaded: ${filteredProducts.length} for ${category || search || 'all products'}`);
 
-  // Verify DOM rendering
-  setTimeout(() => {
-    const productsInDom = container.querySelectorAll('.bg-white, .dark\\:bg-gray-900');
-    console.log(`Products in DOM: ${productsInDom.length}`);
-  }, 1000);
+  // Add "View All Products" button for category filter
+  if (categoryFilter) {
+    const viewAllButton = document.createElement('div');
+    viewAllButton.className = 'text-center mt-8';
+    viewAllButton.innerHTML = `
+      <button onclick="viewAllProducts()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700">
+        View All Products
+      </button>
+    `;
+    resultsSection.appendChild(viewAllButton);
+  }
 }
 
-// Show "Added" feedback
-function showAddedFeedback(button) {
+// View all products
+function viewAllProducts() {
+  window.location.href = 'ProductPage.html';
+}
+
+// Filter products by category
+function filterByCategory(category) {
+  const normalizedCategory = encodeURIComponent(category);
+  console.log(`Filtering by category: ${category} (encoded: ${normalizedCategory})`);
+  window.location.href = `ProductPage.html?category=${normalizedCategory}`;
+}
+
+// Add to cart with visual feedback
+function addToCartWithFeedback(productId, button) {
+  if (typeof addToCart !== 'function') {
+    console.error('addToCart function not found');
+    return;
+  }
+  
+  addToCart(productId);
+  
+  // Show "Added" feedback
   const originalText = button.textContent;
-  button.textContent = 'Added';
-  button.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
-  button.classList.add('bg-green-500', 'hover:bg-green-600');
+  const originalClasses = button.className;
+  
+  button.textContent = 'Added ✓';
+  button.className = 'flex-1 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors duration-200 text-sm';
   button.disabled = true;
+  
   setTimeout(() => {
     button.textContent = originalText;
-    button.classList.remove('bg-green-500', 'hover:bg-green-600');
-    button.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+    button.className = originalClasses;
     button.disabled = false;
   }, 2000);
+  
+  if (typeof updateCartCount === 'function') {
+    updateCartCount();
+  }
 }
 
 // Search functionality
 function performSearch() {
   const query = document.getElementById('searchInput').value.trim();
   if (query) {
+    console.log(`Searching for: ${query}`);
     window.location.href = `ProductPage.html?search=${encodeURIComponent(query)}`;
   }
 }
@@ -170,6 +258,7 @@ function performSearch() {
 function performMobileSearch() {
   const query = document.getElementById('mobileSearchInput').value.trim();
   if (query) {
+    console.log(`Mobile searching for: ${query}`);
     window.location.href = `ProductPage.html?search=${encodeURIComponent(query)}`;
   }
 }
@@ -179,6 +268,14 @@ function toggleMobileSearch() {
   const mobileSearch = document.getElementById('mobileSearch');
   if (mobileSearch) {
     mobileSearch.classList.toggle('hidden');
+  }
+}
+
+// Toggle categories section
+function toggleCategoriesSection() {
+  const categoriesSection = document.getElementById('categoriesSection');
+  if (categoriesSection) {
+    categoriesSection.classList.toggle('hidden');
   }
 }
 
@@ -196,10 +293,34 @@ function setupMobileMenu() {
   }
 }
 
-// Initialize on page load
+// Enter key search functionality
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('ProductPage.js loaded at', new Date().toLocaleString());
-  updateCartCount();
+  const searchInput = document.getElementById('searchInput');
+  const mobileSearchInput = document.getElementById('mobileSearchInput');
+  const toggleCategoriesButton = document.getElementById('toggleCategories');
+
+  if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') performSearch();
+    });
+  }
+
+  if (mobileSearchInput) {
+    mobileSearchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') performMobileSearch();
+    });
+  }
+
+  if (toggleCategoriesButton) {
+    toggleCategoriesButton.addEventListener('click', toggleCategoriesSection);
+  }
+
+  // Initialize page
+  if (typeof updateCartCount === 'function') {
+    updateCartCount();
+  } else {
+    console.warn('updateCartCount not found in cart-core.js');
+  }
   displayCategories();
   displayProducts();
   setupMobileMenu();

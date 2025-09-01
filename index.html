@@ -9,129 +9,132 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-  
-  <!-- ================= HEADER ================= -->
-  <header class="fixed inset-x-0 top-0 z-50 bg-white dark:bg-gray-900 shadow">
-    <nav class="flex items-center justify-between py-2 px-4 lg:px-8">
-      <!-- Logo -->
-      <a href="index.html" class="flex flex-col items-center">
-        <img src="assets/logo.svg" alt="ShopSwift Logo" class="h-10 w-auto">
-        <span class="font-bold text-blue-600 text-lg">ShopSwift</span>
-      </a>
+  <!-- Header -->
+<header class="fixed inset-x-0 top-0 z-50 bg-white dark:bg-gray-900 shadow">
+  <nav class="flex items-center justify-between py-2 px-4 lg:px-8">
+    <!-- Logo -->
+    <a href="index.html" class="flex flex-col items-center">
+      <img src="assets/logo.svg" alt="ShopSwift Logo" class="h-10 w-auto">
+      <span class="font-bold text-blue-600 text-lg">ShopSwift</span>
+    </a>
 
-      <!-- Desktop Menu -->
-      <div class="hidden lg:flex lg:gap-x-12">
-        <a href="index.html" class="font-semibold hover:text-indigo-600">Home</a>
-        <a href="ProductPage.html" class="font-semibold hover:text-indigo-600">Products</a>
-        <a href="#" class="font-semibold hover:text-indigo-600">About Us</a>
-        <a href="#" class="font-semibold hover:text-indigo-600">Contact</a>
+    <!-- Center Navigation -->
+    <div class="hidden lg:flex lg:flex-1 lg:justify-center">
+      <div class="flex lg:gap-x-20 lg:justify-center">
+        <a href="index.html" class="font-semibold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400">Home</a>
+        <a href="ProductPage.html" class="font-semibold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400">Products</a>
+        <a href="#" class="font-semibold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400">About Us</a>
+        <a href="#" class="font-semibold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400">Contact</a>
       </div>
+    </div>
 
-      <!-- Desktop Search -->
-      <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:mr-8">
-        <div class="relative">
-          <input id="searchInput" type="text" placeholder="Search products..."
-            class="w-64 px-4 py-2 pr-10 text-sm border rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
-          <button onclick="performSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-500">
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile Right Section -->
-      <div class="flex items-center gap-3">
-        <!-- Search toggle -->
-        <button onclick="toggleMobileSearch()" class="lg:hidden p-2 text-gray-700 dark:text-gray-200">
-          <i class="fa fa-search"></i>
-        </button>
-
-        <!-- Cart -->
-        <div class="relative">
-          <a href="cartlist.html" class="inline-flex items-center">
-            <button id="cartBtn" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">
-              🛒
-            </button>
-            <span id="cartCount"
-              class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
-          </a>
-        </div>
-
-        <!-- Mobile Menu Button -->
-        <button command="show-modal" commandfor="mobile-menu"
-          class="lg:hidden rounded-md p-2 text-gray-700 dark:text-gray-200">
-          <i class="fa fa-bars"></i>
-        </button>
-      </div>
-    </nav>
-
-    <!-- Mobile Search -->
-    <div id="mobileSearch" class="hidden lg:hidden px-4 py-3 border-t dark:border-gray-700">
+    <!-- Desktop Search + Cart -->
+    <div class="hidden lg:flex lg:items-center lg:space-x-4">
+      <!-- Search -->
       <div class="relative">
-        <input id="mobileSearchInput" type="text" placeholder="Search products..."
-          class="w-full px-4 py-2 pr-10 text-sm border rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
-        <button onclick="performMobileSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-500">
+        <input id="searchInput" type="text" placeholder="Search products..."
+          class="w-64 px-4 py-2 pr-10 text-sm border rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+        <button onclick="performSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-500">
           <i class="fa fa-search"></i>
         </button>
       </div>
-    </div>
 
-    <!-- Mobile Menu -->
-    <dialog id="mobile-menu" class="backdrop:bg-black/30 lg:hidden">
-      <div class="fixed inset-y-0 right-0 z-50 w-72 bg-white dark:bg-gray-900 shadow-lg p-6 overflow-y-auto">
-        <div class="flex justify-between items-center">
-          <a href="index.html" class="flex items-center space-x-2">
-            <img src="assets/logo.svg" alt="Logo" class="h-8 w-auto">
-            <span class="font-bold text-blue-600">ShopSwift</span>
-          </a>
-          <button command="close" commandfor="mobile-menu" class="text-gray-600 dark:text-gray-200">
-            <i class="fa fa-times"></i>
+      <!-- Cart -->
+      <div class="relative">
+        <a href="cartlist.html" class="inline-flex items-center">
+          <button id="cartBtn" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">
+            🛒
           </button>
-        </div>
-        <nav class="mt-6 space-y-4">
-          <a href="index.html" class="block font-semibold hover:text-indigo-600">Home</a>
-          <a href="ProductPage.html" class="block font-semibold hover:text-indigo-600">Products</a>
-          <a href="#" class="block font-semibold hover:text-indigo-600">About Us</a>
-          <a href="#" class="block font-semibold hover:text-indigo-600">Contact</a>
-        </nav>
-        <div class="mt-6">
-          <a href="cartlist.html" class="block">
-            <button id="cartBtnMobile"
-              class="w-full bg-indigo-600 text-white rounded-md py-2 font-semibold hover:bg-indigo-500">
-              🛒 Cart (<span id="cartCountMobile">0</span>)
-            </button>
-          </a>
-        </div>
-      </div>
-    </dialog>
-  </header>
-
-  <!-- ================= HERO ================= -->
-  <section class="relative w-full h-[350px] mt-16">
-    <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
-      <div class="min-w-full h-[350px] relative">
-        <img src="assets/text-logo.jpg" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-center">
-          <h2 class="text-4xl font-bold mb-4">Welcome to ShopSwift</h2>
-          <p class="mb-6">We have all it takes at the best prices</p>
-          <a href="ProductPage.html" class="bg-indigo-600 px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700">Shop Now</a>
-        </div>
-      </div>
-      <div class="min-w-full h-[350px] relative">
-        <img src="assets/image.jpg.jpg" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <h2 class="text-4xl font-bold text-white">Electronics</h2>
-        </div>
+          <span id="cartCount"
+            class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+        </a>
       </div>
     </div>
-    <button onclick="prevSlide()" class="absolute left-5 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full">‹</button>
-    <button onclick="nextSlide()" class="absolute right-5 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full">›</button>
+
+    <!-- Mobile Right Section -->
+    <div class="flex items-center gap-2 lg:hidden">
+      <!-- Mobile Search Button -->
+      <button onclick="toggleMobileSearch()" class="p-2 text-gray-700 dark:text-gray-200">
+        <i class="fa fa-search"></i>
+      </button>
+
+      <!-- Mobile Cart -->
+      <div class="relative">
+        <a href="cartlist.html" class="inline-flex items-center">
+          <button id="cartBtnMobile" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500">
+            🛒
+          </button>
+          <span id="cartCountMobile"
+            class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button command="show-modal" commandfor="mobile-menu"
+        class="rounded-md p-2 text-gray-700 dark:text-gray-200">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Search -->
+  <div id="mobileSearch" class="hidden lg:hidden px-4 py-3 border-t dark:border-gray-700">
+    <div class="relative">
+      <input id="mobileSearchInput" type="text" placeholder="Search products..."
+        class="w-full px-4 py-2 pr-10 text-sm border rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+      <button onclick="performMobileSearch()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-500">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <dialog id="mobile-menu" class="backdrop:bg-black/30 lg:hidden">
+    <div class="fixed inset-y-0 right-0 z-50 w-72 bg-white dark:bg-gray-900 shadow-lg p-6 overflow-y-auto">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="flex items-center space-x-2">
+          <img src="assets/logo.svg" alt="Logo" class="h-8 w-auto">
+          <span class="font-bold text-blue-600">ShopSwift</span>
+        </a>
+        <button command="close" commandfor="mobile-menu" class="text-gray-600 dark:text-gray-200">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <nav class="mt-6 space-y-4">
+        <a href="index.html" class="block font-semibold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400">Home</a>
+        <a href="ProductPage.html" class="block font-semibold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400">Products</a>
+        <a href="#" class="block font-semibold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400">About Us</a>
+        <a href="#" class="block font-semibold text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400">Contact</a>
+      </nav>
+      <div class="mt-6">
+        <a href="cartlist.html" class="block">
+          <button id="cartBtnMobile"
+            class="w-full bg-indigo-600 text-white rounded-md py-2 font-semibold hover:bg-indigo-500">
+            🛒 Cart (<span id="cartCountMobile">0</span>)
+          </button>
+        </a>
+      </div>
+    </div>
+  </dialog>
+</header>
+
+
+  <!--Hero Section-->
+  <section class="relative w-full h-[350px] mt-16 bg-[url('./assets/ShopSwift-logo.jpg')] bg-cover bg-center">
+    <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">
+      <h2 class="text-4xl font-bold text-white mb-4">Welcome to ShopSwift</h2>
+      <p class="text-lg text-gray-200 mb-6 max-w-2xl">Explore our curated collection of high-quality products at unbeatable prices.</p>
+      <a href="ProductPage.html" class="bg-indigo-600 px-6 py-3 rounded-lg font-semibold text-white hover:bg-indigo-700">Shop Now</a>
+    </div>
   </section>
 
-  <!-- ================= MAIN ================= -->
+  <!--Main-->
   <main class="pt-5">
+
     <!-- Featured Products -->
     <section class="py-16 bg-gray-50 dark:bg-gray-800">
       <div class="container mx-auto px-4">
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 text-center max-w-2xl mx-auto">Discover our hand-picked favorites and exclusive offers!</p>
         <h2 class="text-3xl font-bold text-center mb-12">Featured Products</h2>
         <div id="featuredProducts" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
         <div class="text-center mt-8">
@@ -154,29 +157,38 @@
         <h2 class="text-3xl font-bold text-center mb-8">What People Are Saying</h2>
         <div class="grid gap-8 md:grid-cols-3">
           <div class="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 text-center">
+
             <div class="w-20 h-20 rounded-full border-2 border-blue-500 overflow-hidden mx-auto mb-4">
               <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-full h-full object-cover">
             </div>
+
             <p class="italic">“This platform is amazing! I found exactly what I needed.”</p>
             <h3 class="mt-4 font-semibold">John Doe</h3>
             <span class="text-sm text-gray-500">Entrepreneur</span>
           </div>
+
           <div class="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 text-center">
+
             <div class="w-20 h-20 rounded-full border-2 border-blue-500 overflow-hidden mx-auto mb-4">
               <img src="https://randomuser.me/api/portraits/women/45.jpg" class="w-full h-full object-cover">
             </div>
+
             <p class="italic">“The experience was seamless. Highly recommended!”</p>
             <h3 class="mt-4 font-semibold">Jane Smith</h3>
             <span class="text-sm text-gray-500">Designer</span>
           </div>
+
           <div class="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 text-center">
+
             <div class="w-20 h-20 rounded-full border-2 border-blue-500 overflow-hidden mx-auto mb-4">
               <img src="https://randomuser.me/api/portraits/men/76.jpg" class="w-full h-full object-cover">
             </div>
+
             <p class="italic">“Excellent service! The support team was really helpful.”</p>
             <h3 class="mt-4 font-semibold">Michael Lee</h3>
             <span class="text-sm text-gray-500">Software Engineer</span>
           </div>
+          
         </div>
       </div>
     </section>
@@ -192,8 +204,8 @@
     </section>
   </main>
 
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-gray-900 text-gray-300 py-10 mt-16">
+  <!--Footer-->
+  <footer class="bg-gray-900 text-gray-300 py-5 mt-6">
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
       <div>
         <h2 class="text-2xl font-bold text-white">ShopSwift</h2>
@@ -212,19 +224,23 @@
       <div>
         <h3 class="text-lg font-semibold mb-3">Connect</h3>
         <div class="flex space-x-4 mb-4">
-          <a href="https://github.com/Kontractour" class="hover:text-white"><i class="fab fa-github"></i></a>
-          <a href="https://www.facebook.com/godswill.clement.315/" class="hover:text-white"><i class="fab fa-facebook"></i></a>
-          <a href="https://x.com/Kontractour" class="hover:text-white"><i class="fab fa-twitter"></i></a>
-          <a href="https://www.instagram.com/willz_clement/" class="hover:text-white"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.linkedin.com/in/godswill-okereke-3ba33b37a" class="hover:text-white"><i class="fab fa-linkedin"></i></a>
+          <a href="https://github.com/Kontractour" target="_blank" rel="noopener noreferrer" class="hover:text-white"><i class="fab fa-github"></i></a>
+          <a href="https://www.facebook.com/godswill.clement.315/" target="_blank" rel="noopener noreferrer" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+          <a href="https://x.com/Kontractour" target="_blank" rel="noopener noreferrer" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/willz_clement/" target="_blank" rel="noopener noreferrer" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/in/godswill-okereke-3ba33b37a" target="_blank" rel="noopener noreferrer" class="hover:text-white"><i class="fab fa-linkedin"></i></a>
+          <a href="https://wa.me/2348105533755" target="_blank" rel="noopener noreferrer" class="hover:text-white"><i class="fab fa-whatsapp"></i></a>
         </div>
-        <p class="text-sm">okerekegodwill7@gmail.com</p>
-        <p class="text-sm">+234 810 553 3755</p>
+              <a href="mailto:okerekegodswill7@gmail.com"class="text-blue-400 hover:underline"><p>
+        okerekegodswill7@gmail.com</p></a>
+
+        <a href="tel:+2348105533755" class="text-blue-400 hover:underline">
+        +234 810 553 3755</a>
       </div>
     </div>
   </footer>
 
-  <!-- ================= SCRIPTS ================= -->
+ 
   <script src="cart-core.js"></script>
   <script src="index.js"></script>
 </body>

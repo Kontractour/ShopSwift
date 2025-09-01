@@ -1,28 +1,27 @@
 // ================= CHECKOUT PAGE FUNCTIONALITY =================
-// This is CheckOut.js for the checkout.html page
+// This is checkout.js for the checkout.html page
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Wait for cart-core.js to initialize
-  if (!window.cartManager) {
-    console.error('Cart Manager not initialized');
-    return;
-  }
-  
   console.log('Loading checkout page...');
   updateOrderSummary();
   setupFormValidation();
   setupShippingChange();
   
   // Redirect if cart is empty
-  if (window.cartManager.cart.length === 0) {
+  if (getCartItems().length === 0) {
     alert('Your cart is empty. Redirecting to products page.');
     window.location.href = 'ProductPage.html';
   }
 });
 
+// Format price
+function formatPrice(value) {
+  return `$${value.toFixed(2)}`;
+}
+
 // Update order summary
 function updateOrderSummary() {
-  const subtotal = window.cartManager.getCartTotal();
+  const subtotal = parseFloat(getCartTotal());
   const shippingSelect = document.getElementById('shipping');
   const shippingCost = shippingSelect ? parseFloat(shippingSelect.value) : 10;
   const total = subtotal + shippingCost;
@@ -208,7 +207,7 @@ function processOrder() {
   // Simulate order processing
   setTimeout(() => {
     // Clear cart
-    window.cartManager.clearCart();
+    clearCart();
     
     // Show success alert
     showSuccessAlert();
@@ -222,13 +221,34 @@ function processOrder() {
 
 // Show success alert
 function showSuccessAlert() {
-  const alert = document.getElementById('successAlert');
-  if (alert) {
-    alert.classList.remove('hidden');
-    
-    // Auto-hide after 3 seconds
+  // Remove any existing success alert
+  const existingAlert = document.getElementById('successAlertModal');
+  if (existingAlert) existingAlert.remove();
+
+  // Create modal
+  const alertModal = document.createElement('div');
+  alertModal.id = 'successAlertModal';
+  alertModal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+  alertModal.innerHTML = `
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-sm w-full mx-4 transform transition-all duration-300 scale-100">
+      <div class="flex flex-col items-center text-center">
+        <i class="fa fa-check-circle text-4xl text-green-500 mb-4"></i>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Order Placed!</h2>
+        <p class="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+          Thank you for your purchase. Your order has been successfully processed.
+        </p>
+      </div>
+    </div>
+  `;
+
+  // Append to body
+  document.body.appendChild(alertModal);
+
+  // Auto-hide after 3 seconds
+  setTimeout(() => {
+    alertModal.classList.add('opacity-0');
     setTimeout(() => {
-      alert.classList.add('hidden');
-    }, 3000);
-  }
+      alertModal.remove();
+    }, 300); // Wait for fade-out animation
+  }, 3000);
 }
