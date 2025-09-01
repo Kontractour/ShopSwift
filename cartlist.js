@@ -1,4 +1,4 @@
-// Calculate total locally as a fallback
+// Calculating total locally as a fallback
 function calculateCartTotal(cart) {
   console.log('Calculating cart total with items:', cart);
   if (!Array.isArray(cart) || cart.length === 0) {
@@ -88,7 +88,7 @@ function displayCartItems() {
   totalElement.textContent = `$${total.toFixed(2)}`;
   console.log(`Cart items loaded: ${cartItems.length}, Total: $${total.toFixed(2)}`);
 
-  // Verify DOM rendering
+  // Verifying DOM rendering
   setTimeout(() => {
     const itemsInDom = container.querySelectorAll('.bg-white, .dark\\:bg-gray-900');
     console.log(`Cart items in DOM: ${itemsInDom.length}`);
@@ -114,14 +114,14 @@ async function updateQuantity(productId, newQuantity) {
   }
 
   if (newQuantity > item.quantity) {
-    // Increment quantity
+    // Incresing quantity
     const success = await addToCart(productId);
     if (!success) {
       console.error(`Failed to increment quantity for product ${productId}`);
       return;
     }
   } else {
-    // Decrement quantity
+    // Decresing quantity
     item.quantity = newQuantity;
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
@@ -130,7 +130,7 @@ async function updateQuantity(productId, newQuantity) {
   displayCartItems();
 }
 
-// Remove item from cart
+// Removing item from cart
 function removeItem(productId) {
   removeFromCart(productId);
   displayCartItems();

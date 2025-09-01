@@ -1,7 +1,7 @@
 // Shared API base
 const API_BASE = 'https://fakestoreapi.com';
 
-// Fetch data from API
+// Fetching data from API
 async function fetchData(endpoint) {
   try {
     const response = await fetch(`${API_BASE}${endpoint}`);
@@ -17,14 +17,14 @@ async function fetchData(endpoint) {
   }
 }
 
-// Fetch single product
+// Fetching single product
 async function fetchProduct(id) {
   const product = await fetchData(`/products/${id}`);
   console.log(`Fetched product ${id}:`, product);
   return product || null;
 }
 
-// Initialize cart from localStorage
+// Initializing cart from localStorage
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
 // Save cart to localStorage
@@ -32,7 +32,7 @@ function saveCart() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-// Add item to cart
+// Adding item to cart
 async function addToCart(productId) {
   const product = await fetchProduct(productId);
   if (!product) {
@@ -52,14 +52,14 @@ async function addToCart(productId) {
   return true;
 }
 
-// Remove item from cart
+// Removing item from cart
 function removeFromCart(productId) {
   cart = cart.filter(item => item.id !== productId);
   saveCart();
   updateCartCount();
 }
 
-// Update cart count in header
+// Updating cart count in header
 function updateCartCount() {
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartCount = document.getElementById('cartCount');
@@ -68,17 +68,17 @@ function updateCartCount() {
   if (cartCountMobile) cartCountMobile.textContent = count;
 }
 
-// Get total cart value
+// To get total cart value
 function getCartTotal() {
   return cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
 }
 
-// Get cart items
+// Getting cart items
 function getCartItems() {
   return cart;
 }
 
-// Clear cart (e.g., after checkout)
+// Clearing cart (e.g., after checkout)
 function clearCart() {
   cart = [];
   saveCart();

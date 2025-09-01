@@ -1,5 +1,4 @@
-// ================= CHECKOUT PAGE FUNCTIONALITY =================
-// This is checkout.js for the checkout.html page
+// Checkout.js for the checkout.html
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Loading checkout page...');
@@ -19,7 +18,7 @@ function formatPrice(value) {
   return `$${value.toFixed(2)}`;
 }
 
-// Update order summary
+// Updating order summary
 function updateOrderSummary() {
   const subtotal = parseFloat(getCartTotal());
   const shippingSelect = document.getElementById('shipping');
@@ -36,7 +35,7 @@ function updateOrderSummary() {
   if (totalElement) totalElement.textContent = formatPrice(total);
 }
 
-// Setup shipping method change handler
+// Setup for shipping method change handler
 function setupShippingChange() {
   const shippingSelect = document.getElementById('shipping');
   if (shippingSelect) {
@@ -150,7 +149,7 @@ function clearFieldError(input) {
   }
 }
 
-// Format card number (add spaces every 4 digits)
+// Format card number (adding spaces every 4 digits)
 function formatCardNumber(e) {
   let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
   let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
